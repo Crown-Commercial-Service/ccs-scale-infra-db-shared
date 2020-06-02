@@ -33,6 +33,4 @@ module "agreements" {
   deletion_protection             = var.deletion_protection
   skip_final_snapshot             = var.skip_final_snapshot
   enabled_cloudwatch_logs_exports = var.enabled_cloudwatch_logs_exports
-  agreement_db_username           = var.agreement_db_username
-  agreement_db_password           = var.agreement_db_password
 }

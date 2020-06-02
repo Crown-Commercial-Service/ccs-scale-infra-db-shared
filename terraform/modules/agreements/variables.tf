@@ -26,11 +26,3 @@ variable "skip_final_snapshot" {
 variable "enabled_cloudwatch_logs_exports" {
   type = list(string)
 }
-
-variable "agreement_db_username" {
-  type = string
-}
-
-variable "agreement_db_password" {
-  type = string
-}

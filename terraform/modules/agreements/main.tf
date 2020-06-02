@@ -45,12 +45,22 @@ resource "aws_db_subnet_group" "agreements" {
   }
 }
 
+data "aws_ssm_parameter" "master_username" {
+  name = "${lower(var.environment)}-agreements-db-master-username"
+  with_decryption = true
+}
+
+data "aws_ssm_parameter" "master_password" {
+  name = "${lower(var.environment)}-agreements-db-master-password"
+  with_decryption = true
+}
+
 resource "aws_rds_cluster" "default" {
   cluster_identifier              = "ccs-eu2-${lower(var.environment)}-db-agreements"
   availability_zones              = var.availability_zones
   database_name                   = "agreements"
-  master_username                 = var.agreement_db_username
-  master_password                 = var.agreement_db_password
+  master_username                 = data.aws_ssm_parameter.master_username.value
+  master_password                 = data.aws_ssm_parameter.master_password.value
   engine                          = "aurora-postgresql"
   apply_immediately               = true
   vpc_security_group_ids          = ["${aws_security_group.allow_postgres_external.id}"]
@@ -68,13 +78,12 @@ resource "aws_rds_cluster" "default" {
 }
 
 resource "aws_rds_cluster_instance" "cluster_instances" {
-  count               = 1
-  identifier          = "ccs-eu2-${lower(var.environment)}-db-agreements-${count.index}"
-  cluster_identifier  = aws_rds_cluster.default.id
-  instance_class      = "db.t3.medium"
-  engine              = "aurora-postgresql"
-  publicly_accessible = true
-  apply_immediately   = true
-
+  count                = 1
+  identifier           = "ccs-eu2-${lower(var.environment)}-db-agreements-${count.index}"
+  cluster_identifier   = aws_rds_cluster.default.id
+  instance_class       = "db.t3.medium"
+  engine               = "aurora-postgresql"
+  apply_immediately    = true
+  publicly_accessible  = true
   db_subnet_group_name = aws_db_subnet_group.agreements.name
 }

@@ -5,6 +5,14 @@
 ### Overview
 This repository contains a complete set of configuration files and code to deploy SCALE shared service databases into the AWS cloud.  The infrastructure code is written in [Terraform](https://www.terraform.io/) and contains the following primary components:
 
+### Prerequisites - Setup master user credentials
+Create 2 new secure string SSM parameters:
+
+`{environment}-agreements-db-master-username`
+`{environment}-agreements-db-master-password`
+
+These will be referenced in the Terraform script. You will get a 'ParameterNotFound` error if these are not created before running the script.
+
 ### Connection to Database via Bastion Host
 The Bastion Host EC2 instance provisioned in this project can be used tunnel SSH connections to access the Postgres Databases. 
 
