@@ -35,6 +35,4 @@ module "deploy" {
   deletion_protection             = false
   skip_final_snapshot             = false
   enabled_cloudwatch_logs_exports = ["postgresql"]
-  agreement_db_username           = var.agreement_db_username
-  agreement_db_password           = var.agreement_db_username
 }
