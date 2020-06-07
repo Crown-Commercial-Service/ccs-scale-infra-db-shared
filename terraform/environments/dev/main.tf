@@ -20,7 +20,7 @@ provider "aws" {
 
 locals {
   environment        = "DEV"
-  availability_zones = "eu-west-2a", "eu-west-2b"]
+  availability_zones = ["eu-west-2a", "eu-west-2b"]
 }
 
 data "aws_ssm_parameter" "aws_account_id" {
