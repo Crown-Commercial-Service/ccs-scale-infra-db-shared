@@ -24,11 +24,9 @@ data "aws_ssm_parameter" "public_web_subnet_ids" {
   name = "${lower(var.environment)}-public-web-subnet-ids"
 }
 
-
 data "aws_ssm_parameter" "cidr_blocks_db" {
   name = "${lower(var.environment)}-cidr-blocks-db"
 }
-
 
 module "agreements" {
   source                          = "../../agreements"
