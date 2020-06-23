@@ -14,17 +14,17 @@ resource "aws_security_group" "allow_postgres_external" {
   vpc_id      = var.vpc_id
 
   ingress {
-    from_port = 5432
-    to_port   = 5432
-    protocol  = "tcp"
+    from_port   = 5432
+    to_port     = 5432
+    protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }
 
   egress {
-    from_port = 5432
-    to_port   = 5432
-    protocol  = "tcp"
-    cidr_blocks = var.cidr_blocks_db
+    from_port   = 5432
+    to_port     = 5432
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
   }
 }
 
@@ -41,12 +41,12 @@ resource "aws_db_subnet_group" "agreements" {
 }
 
 data "aws_ssm_parameter" "master_username" {
-  name = "${lower(var.environment)}-agreements-db-master-username"
+  name            = "${lower(var.environment)}-agreements-db-master-username"
   with_decryption = true
 }
 
 data "aws_ssm_parameter" "master_password" {
-  name = "${lower(var.environment)}-agreements-db-master-password"
+  name            = "${lower(var.environment)}-agreements-db-master-password"
   with_decryption = true
 }
 
