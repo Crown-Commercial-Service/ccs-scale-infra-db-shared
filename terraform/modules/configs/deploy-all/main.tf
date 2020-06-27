@@ -34,4 +34,5 @@ module "agreements" {
   skip_final_snapshot             = var.skip_final_snapshot
   enabled_cloudwatch_logs_exports = var.enabled_cloudwatch_logs_exports
   backup_retention_period         = var.backup_retention_period
+  cluster_instances               = var.agreements_cluster_instances
 }

@@ -27,3 +27,8 @@ variable "backup_retention_period" {
   type    = number
   default = 1
 }
+
+variable "agreements_cluster_instances" {
+  type    = number
+  default = 1
+}

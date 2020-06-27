@@ -50,6 +50,17 @@ data "aws_ssm_parameter" "master_password" {
   with_decryption = true
 }
 
+resource "aws_kms_key" "agreements" {
+  description = "Key for Agreements Postgres Aurora Cluster - ccs-eu2-${lower(var.environment)}-db-agreements"
+
+  tags = {
+    Project     = module.globals.project_name
+    Environment = upper(var.environment)
+    Cost_Code   = module.globals.project_cost_code
+    AppType     = "ECS"
+  }
+}
+
 resource "aws_rds_cluster" "default" {
   cluster_identifier              = "ccs-eu2-${lower(var.environment)}-db-agreements"
   availability_zones              = var.availability_zones
@@ -66,6 +77,8 @@ resource "aws_rds_cluster" "default" {
   final_snapshot_identifier       = "final-snaphot-agreements-${uuid()}"
   backup_retention_period         = var.backup_retention_period
   preferred_backup_window         = "00:57-01:27"
+  kms_key_id                      = aws_kms_key.agreements.arn
+  storage_encrypted               = true
 
   lifecycle {
     ignore_changes = [
@@ -75,7 +88,7 @@ resource "aws_rds_cluster" "default" {
 }
 
 resource "aws_rds_cluster_instance" "cluster_instances" {
-  count                = 1
+  count                = var.cluster_instances
   identifier           = "ccs-eu2-${lower(var.environment)}-db-agreements-${count.index}"
   cluster_identifier   = aws_rds_cluster.default.id
   instance_class       = "db.t3.medium"
@@ -85,9 +98,10 @@ resource "aws_rds_cluster_instance" "cluster_instances" {
   db_subnet_group_name = aws_db_subnet_group.agreements.name
 }
 
+# Note: we are using the read-only cluster endpoint - load balanced across read replicas (defined by var.cluster_instances)
 resource "aws_ssm_parameter" "instance_endpoint" {
   name      = "${lower(var.environment)}-agreements-db-endpoint"
   type      = "String"
-  value     = aws_rds_cluster_instance.cluster_instances[0].endpoint
+  value     = aws_rds_cluster.default.reader_endpoint
   overwrite = true
 }
