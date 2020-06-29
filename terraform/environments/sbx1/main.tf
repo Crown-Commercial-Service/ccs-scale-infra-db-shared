@@ -35,4 +35,5 @@ module "deploy" {
   deletion_protection             = false
   skip_final_snapshot             = false
   enabled_cloudwatch_logs_exports = ["postgresql"]
+  agreements_cluster_instances    = 3
 }
