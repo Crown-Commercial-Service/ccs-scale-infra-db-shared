@@ -34,3 +34,11 @@ variable "backup_retention_period" {
 variable "cluster_instances" {
   type = number
 }
+
+variable "snapshot_identifier" {
+  type = string
+}
+
+variable "kms_key_id" {
+  type = string
+}
