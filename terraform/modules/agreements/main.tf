@@ -50,17 +50,11 @@ data "aws_ssm_parameter" "master_password" {
   with_decryption = true
 }
 
-resource "aws_kms_key" "agreements" {
-  description = "Key for Agreements Postgres Aurora Cluster - ccs-eu2-${lower(var.environment)}-db-agreements"
-
-  tags = {
-    Project     = module.globals.project_name
-    Environment = upper(var.environment)
-    Cost_Code   = module.globals.project_cost_code
-    AppType     = "ECS"
-  }
-}
-
+##################################################################################
+# Note: snapshot_identifier can be used to restore to a snapshot when rebuiding 
+# the database from scratch. As it stands, it will only come into effect on a new
+# provisioning (as it is included in the ignore_changes block)
+##################################################################################
 resource "aws_rds_cluster" "default" {
   cluster_identifier              = "ccs-eu2-${lower(var.environment)}-db-agreements"
   availability_zones              = var.availability_zones
@@ -68,6 +62,7 @@ resource "aws_rds_cluster" "default" {
   master_username                 = data.aws_ssm_parameter.master_username.value
   master_password                 = data.aws_ssm_parameter.master_password.value
   engine                          = "aurora-postgresql"
+  engine_version                  = "11.7"
   apply_immediately               = true
   vpc_security_group_ids          = ["${aws_security_group.allow_postgres_external.id}"]
   deletion_protection             = var.deletion_protection
@@ -77,12 +72,14 @@ resource "aws_rds_cluster" "default" {
   final_snapshot_identifier       = "final-snaphot-agreements-${uuid()}"
   backup_retention_period         = var.backup_retention_period
   preferred_backup_window         = "00:57-01:27"
-  kms_key_id                      = aws_kms_key.agreements.arn
+  kms_key_id                      = var.kms_key_id
   storage_encrypted               = true
+  snapshot_identifier             = var.snapshot_identifier
 
   lifecycle {
     ignore_changes = [
-      availability_zones
+      availability_zones,
+      snapshot_identifier
     ]
   }
 }

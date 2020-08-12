@@ -32,3 +32,12 @@ variable "agreements_cluster_instances" {
   type    = number
   default = 1
 }
+
+#####################################
+# Override this if you want to create 
+# a new database from a snapshot 
+#####################################
+variable "snapshot_identifier" {
+  type = string
+  default = ""
+}
