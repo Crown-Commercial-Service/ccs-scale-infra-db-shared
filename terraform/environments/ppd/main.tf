@@ -37,4 +37,5 @@ module "deploy" {
   enabled_cloudwatch_logs_exports = ["postgresql"]
   backup_retention_period         = 35
   agreements_cluster_instances    = length(local.availability_zones)
+  snapshot_identifier             = "final-snaphot-agreements-7291a7b3-ddd5-df94-fa67-c0012cef9386"
 }
