@@ -8,6 +8,10 @@ module "globals" {
   source = "../globals"
 }
 
+data "aws_vpc" "scale" {
+  id = var.vpc_id
+}
+
 resource "aws_security_group" "allow_postgres_external" {
   name        = "allow_postgres_external"
   description = "Allow HTTP inbound traffic"
@@ -17,14 +21,14 @@ resource "aws_security_group" "allow_postgres_external" {
     from_port   = 5432
     to_port     = 5432
     protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
+    cidr_blocks = [data.aws_vpc.scale.cidr_block]
   }
 
   egress {
     from_port   = 5432
     to_port     = 5432
     protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
+    cidr_blocks = [data.aws_vpc.scale.cidr_block]
   }
 }
 
@@ -51,7 +55,7 @@ data "aws_ssm_parameter" "master_password" {
 }
 
 ##################################################################################
-# Note: snapshot_identifier can be used to restore to a snapshot when rebuiding 
+# Note: snapshot_identifier can be used to restore to a snapshot when rebuiding
 # the database from scratch. As it stands, it will only come into effect on a new
 # provisioning (as it is included in the ignore_changes block)
 ##################################################################################
