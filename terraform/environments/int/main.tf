@@ -35,4 +35,5 @@ module "deploy" {
   deletion_protection             = false
   skip_final_snapshot             = false
   enabled_cloudwatch_logs_exports = ["postgresql"]
+  snapshot_identifier             = "arn:aws:rds:eu-west-2:400333782887:cluster-snapshot:final-snaphot-agreements-4d171c5b-cf0b-9439-9fc6-e8a644649e9a"
 }
