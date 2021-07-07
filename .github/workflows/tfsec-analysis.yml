@@ -7,7 +7,7 @@ name: tfsec
 
 on:
   push:
-    branches: [ develop, master ]
+    branches: [ develop, bat/develop, master ]
   pull_request:
     branches: [ develop ]  
   schedule:
