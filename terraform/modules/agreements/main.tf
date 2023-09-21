@@ -32,6 +32,17 @@ resource "aws_security_group" "allow_postgres_external" {
   }
 }
 
+resource "aws_security_group_rule" "allow_postgres_access" {
+  type              = "ingress"
+  for_each          = var.transit_gateway_postgres_cidrs
+  from_port         = 5432
+  to_port           = 5432
+  protocol          = "tcp"
+  prefix_list_ids   = [each.value.prefix_list_id]
+  security_group_id = aws_security_group.allow_postgres_external.id
+  description       = "Transit Gateway allowed cidrs"
+}
+
 resource "aws_db_subnet_group" "agreements" {
   name       = "main"
   subnet_ids = var.private_db_subnet_ids

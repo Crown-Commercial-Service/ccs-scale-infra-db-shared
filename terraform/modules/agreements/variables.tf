@@ -42,3 +42,10 @@ variable "snapshot_identifier" {
 variable "kms_key_id" {
   type = string
 }
+
+variable "transit_gateway_postgres_cidrs" {
+  type = map(object({
+    prefix_list_id = string
+  }))
+  default = {}
+}
