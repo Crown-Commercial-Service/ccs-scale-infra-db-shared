@@ -41,4 +41,5 @@ module "agreements" {
   cluster_instances               = var.agreements_cluster_instances
   snapshot_identifier             = var.snapshot_identifier
   kms_key_id                      = data.aws_ssm_parameter.aurora_kms_key_arn.value
+  transit_gateway_postgres_cidrs  = var.transit_gateway_postgres_cidrs
 }

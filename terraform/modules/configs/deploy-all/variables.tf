@@ -33,11 +33,18 @@ variable "agreements_cluster_instances" {
   default = 1
 }
 
+variable "transit_gateway_postgres_cidrs" {
+  type = map(object({
+    prefix_list_id = string
+  }))
+  default = {}
+}
+
 #####################################
 # Override this if you want to create 
 # a new database from a snapshot 
 #####################################
 variable "snapshot_identifier" {
-  type = string
+  type    = string
   default = ""
 }
