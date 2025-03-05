@@ -49,3 +49,5 @@ variable "transit_gateway_postgres_cidrs" {
   }))
   default = {}
 }
+
+variable "postgres_engine_version" {}

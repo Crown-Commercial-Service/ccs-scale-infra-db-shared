@@ -42,4 +42,5 @@ module "agreements" {
   snapshot_identifier             = var.snapshot_identifier
   kms_key_id                      = data.aws_ssm_parameter.aurora_kms_key_arn.value
   transit_gateway_postgres_cidrs  = var.transit_gateway_postgres_cidrs
+  postgres_engine_version         = var.postgres_engine_version
 }
