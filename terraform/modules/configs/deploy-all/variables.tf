@@ -48,3 +48,5 @@ variable "snapshot_identifier" {
   type    = string
   default = ""
 }
+
+variable "postgres_engine_version" {}

@@ -36,4 +36,5 @@ module "deploy" {
   skip_final_snapshot             = false
   enabled_cloudwatch_logs_exports = ["postgresql"]
   agreements_cluster_instances    = 3
+  postgres_engine_version         = var.rds_postgres_engine_version
 }

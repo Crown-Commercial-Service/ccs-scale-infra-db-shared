@@ -37,4 +37,5 @@ module "deploy" {
   enabled_cloudwatch_logs_exports = ["postgresql"]
   backup_retention_period         = 35
   agreements_cluster_instances    = length(local.availability_zones)
+  postgres_engine_version         = var.rds_postgres_engine_version
 }
